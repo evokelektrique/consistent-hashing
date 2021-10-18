@@ -6,17 +6,12 @@
 
 body {
    background: #fafafa;
-   font-family: sans-serif;
    font-size: 17px;
    color: #434343;
 }
 
-#description {
-   font-family: 'Caveat', cursive;
-   text-align: center;
-   margin-top: 5em;
-   font-weight: lighter;
-   font-size: 3rem;
+body, button {
+   font-family: 'Roboto', sans-serif;
 }
 
 #flatten_ring:before {
@@ -33,7 +28,7 @@ body {
 
 #flatten_ring {
    margin: 0 auto;
-   margin-top: 5rem;
+   margin-bottom: 5rem;
    position: relative;
    width: 1024px;
    max-width: 100%;
@@ -41,7 +36,7 @@ body {
    justify-content: space-around;
 }
 
-#flatten_ring .server {
+#flatten_ring .node {
    padding: 10px;
    color: #757594;
    border-radius: 5px;
@@ -51,5 +46,52 @@ body {
    background: #fff;
    text-align: center;
    user-select: none;
+   font-weight: bold;
    z-index: 9;
+}
+
+#controls {
+   text-align: center;
+   margin-bottom: 7rem;
+}
+
+.button {
+   text-transform: uppercase;
+   padding: 10px 15px;
+   font-weight: bold;
+   border-radius: 5px;
+   border: none;
+   cursor: pointer;
+   margin: 0 5px;
+   color: white;
+   font-size: 15px;
+   transition: all .2s ease;
+   opacity: 0.8;
+}
+
+.button:hover,
+.button:active {
+   opacity: 1;
+}
+
+#add_node {
+   background: #2196f3;
+}
+
+#remove_node {
+   background: #f44336;
+}
+
+#send_request {
+   background: #4caf50;
+}
+
+#description {
+   font-family: 'Caveat', cursive;
+   text-align: center;
+   display: block;
+   margin-top: 2em;
+   margin-bottom: 2em;
+   font-weight: lighter;
+   font-size: 3rem;
 }

@@ -7,36 +7,23 @@
    <link rel="preconnect" href="https://fonts.googleapis.com">
    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
    <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
    <link rel="stylesheet" type="text/css" href="./style.css">
-   <script type="text/javascript" src="./ring.js"></script>
+   <script type="text/javascript" src="./ring.js" defer=""></script>
 </head>
 <body>
 
-   <div id="flatten_ring">
-      <div class="server">
-         <span class="name">A</span>
-         <span class="host">0.0.0.1</span>
-      </div>
-      <div class="server">
-         <span class="name">B</span>
-         <span class="host">0.0.0.2</span>
-      </div>
-      <div class="server">
-         <span class="name">C</span>
-         <span class="host">0.0.0.3</span>
-      </div>
-      <div class="server">
-         <span class="name">D</span>
-         <span class="host">0.0.0.4</span>
-      </div>
+   <div id="description">
+      Destination = <u>Hash</u>(key) % <u>Total Nodes</u>
    </div>
 
-   <div id="description">
-      (Fourmula)
-      <br>
-      <br>
-      Destination = <u>Hash</u>(key) % <u>Total Servers</u>
+   <div id="controls">
+      <button id="add_node" class="button">Add node</button>
+      <button id="remove_node" class="button">Remove node</button>
+      <button id="send_request" class="button">Send request</button>
    </div>
+
+   <div id="flatten_ring"></div>
 
 </body>
 </html>
