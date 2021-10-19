@@ -76,26 +76,6 @@ const Ring = {
 
 };
 
-// (async () => {
-
-//    const ring = Ring;
-
-//    ring.add_node('A', '0.0.0.0');
-//    ring.add_node('B', '0.0.0.1');
-//    ring.add_node('C', '0.0.0.2');
-
-//    const total_nodes = ring.nodes.length;
-
-//    const message = "Test";
-//    const hash    = await Ring.hash(message);
-//    const index   = ring.convert_to_integer(hash) % total_nodes;
-
-//    const destination = ring.nodes[index];
-//    console.log(destination);
-
-// })();
-
-
 /**
  * Get element by ID
  *
@@ -139,11 +119,12 @@ function generate_random_name() {
 }
 
 /**
- * Add a new node to ring
+ * Create dom node
  *
- * @param {Object} node Node object
+ * @param  {Object} node Node
+ * @return {Object}      Element
  */
-function add_node(node) {
+function create_node(node) {
    const wrapper   = document.createElement('div');
    const node_name = document.createElement('span');
    const node_host = document.createElement('span');
@@ -158,6 +139,17 @@ function add_node(node) {
    wrapper.appendChild(node_name);
    wrapper.appendChild(node_host);
 
+   return wrapper;
+}
+
+/**
+ * Add a new node to ring
+ *
+ * @param {Object} node Node object
+ */
+function add_node(node) {
+   const wrapper = create_node(node);
+
    get('flatten_ring').appendChild(wrapper);
 }
 
@@ -171,6 +163,7 @@ function remove_node(ring) {
    const nodes = Array.from(document.querySelectorAll('#flatten_ring .node'));
 
    if(nodes.length === 0) {
+      alert('Please add some node');
       return;
    }
 
@@ -186,17 +179,75 @@ function remove_node(ring) {
    return new_nodes;
 }
 
+/**
+ * Find the destination of request
+ *
+ * @param  {Object} ring     Ring
+ * @param  {String} message  Message
+ * @return {Integer}         Server index
+ */
+async function send_request(ring, message) {
+   const total_nodes = ring.nodes.length;
+   const hash        = await Ring.hash(message);
+   const index       = ring.convert_to_integer(hash) % total_nodes;
+   const destination = ring.nodes[index];
+
+   return destination;
+}
+
+function show_result(node) {
+   const container = get('destination');
+   const wrapper   = create_node(node);
+   get('destination').classList.remove('hide');
+
+   return wrapper;
+}
+
+function hide_result() {
+   get('destination').classList.add('hide');
+}
+
 const ring = Ring;
 
 get('add_node').addEventListener('click', e => {
    e.preventDefault();
    const node = ring.add_node(generate_random_name(), generate_random_ip());
-   console.log(ring)
    add_node(node);
 });
-
 
 get('remove_node').addEventListener('click', e => {
    e.preventDefault();
    remove_node(ring);
+   hide_result();
 });
+
+get('send_request').addEventListener('click', async e => {
+   e.preventDefault();
+
+   if(ring.nodes.length === 0) {
+      alert("Please add some node");
+      return;
+   }
+
+   const nodes              = Array.from(document.querySelectorAll('#flatten_ring .node'));
+   const request_id_element = e.target.querySelector('#request_id');
+   const request_id         = parseInt(request_id_element.innerText) + 1;
+   const node               = await send_request(ring, request_id);
+   const container          = get('destination');
+   const wrapper            = show_result(node);
+
+   const search = nodes.filter(n => {
+      const host = n.querySelector('.host').innerText;
+      return host === node.host;
+   })[0];
+
+   nodes.forEach(n => {
+      n.classList.remove('is-active');
+   });
+   console.log(search);
+   search.classList.add('is-active');
+
+   request_id_element.innerText = request_id;
+   container.innerHTML          = wrapper.outerHTML;
+});
+
