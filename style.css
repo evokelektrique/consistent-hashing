@@ -36,7 +36,8 @@ body, button {
    justify-content: space-around;
 }
 
-#flatten_ring .node {
+#flatten_ring .node,
+#destination .node {
    padding: 10px;
    color: #757594;
    border-radius: 5px;
@@ -48,11 +49,26 @@ body, button {
    user-select: none;
    font-weight: bold;
    z-index: 9;
+   transition: all .3s ease;
+}
+
+#flatten_ring .node.is-active {
+   border-color: #6ebd71;
+   box-shadow: 0px 0px 14px #6ebd71;
+}
+
+#destination.hide {
+   opacity: 0;
+}
+
+#destination .node {
+   width: 240px;
+   margin: 0 auto;
 }
 
 #controls {
    text-align: center;
-   margin-bottom: 7rem;
+   margin-bottom: 3rem;
 }
 
 .button {
@@ -94,4 +110,12 @@ body, button {
    margin-bottom: 2em;
    font-weight: lighter;
    font-size: 3rem;
+}
+
+#destination {
+   margin-top: 2rem;
+   font-size: 2rem;
+   display: block;
+   font-weight: bold;
+   font-family: 'Caveat';
 }
