@@ -29,6 +29,11 @@ const Ring = {
       return node;
    },
 
+   remove_node(index) {
+      delete this.nodes[index];
+      return this.nodes;
+   },
+
    /**
     * Hash a given message
     *
@@ -91,10 +96,21 @@ const Ring = {
 // })();
 
 
+/**
+ * Get element by ID
+ *
+ * @param  {String} id Element ID
+ * @return {Object}    Element
+ */
 function get(id) {
    return document.getElementById(id);
 }
 
+/**
+ * Generate a fake IP address
+ *
+ * @return {String} Fake address
+ */
 function generate_random_ip() {
    let ip = "";
    let i = 0;
@@ -111,6 +127,10 @@ function generate_random_ip() {
    return ip;
 }
 
+/**
+ * Generate an alphabetical name
+ * @return {[type]} [description]
+ */
 function generate_random_name() {
    const names = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
    const index = names[Math.floor(Math.random() * names.length)];
@@ -118,16 +138,11 @@ function generate_random_name() {
    return index;
 }
 
-const ring = Ring;
-
-get('add_node').addEventListener('click', e => {
-   e.preventDefault();
-   const node = ring.add_node(generate_random_name(), generate_random_ip());
-   console.log(ring)
-   add_node(node);
-});
-
-
+/**
+ * Add a new node to ring
+ *
+ * @param {Object} node Node object
+ */
 function add_node(node) {
    const wrapper   = document.createElement('div');
    const node_name = document.createElement('span');
@@ -145,3 +160,43 @@ function add_node(node) {
 
    get('flatten_ring').appendChild(wrapper);
 }
+
+/**
+ * Remove nodes form ring
+ *
+ * @param  {Object} ring Ring object
+ * @return {Array}       A list of new nodes
+ */
+function remove_node(ring) {
+   const nodes = Array.from(document.querySelectorAll('#flatten_ring .node'));
+
+   if(nodes.length === 0) {
+      return;
+   }
+
+   const last_node = nodes[nodes.length - 1];
+   const host      = last_node.querySelector('.host').innerText;
+   const new_nodes = ring.nodes.filter(node => node.host !== host);
+
+   // Re compute nodes
+   ring.nodes      = new_nodes;
+
+   last_node.remove()
+
+   return new_nodes;
+}
+
+const ring = Ring;
+
+get('add_node').addEventListener('click', e => {
+   e.preventDefault();
+   const node = ring.add_node(generate_random_name(), generate_random_ip());
+   console.log(ring)
+   add_node(node);
+});
+
+
+get('remove_node').addEventListener('click', e => {
+   e.preventDefault();
+   remove_node(ring);
+});
